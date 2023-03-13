@@ -6,7 +6,6 @@ $(document).ready(function() {
   $.get(url, function(data) {
     // Converte o arquivo CSV em um objeto JSON
     var jsonData = $.csv.toObjects(data);
-
     // Extrai as chaves dos dados
     var keys = Object.keys(jsonData[0]);
 
@@ -42,10 +41,12 @@ $(document).ready(function() {
               var val = $.fn.dataTable.util.escapeRegex(
                 $(this).val()
               );
+
               column
                 .search(val ? '^' + val + '$' : '', true, false)
                 .draw();
             });
+
           column.data().unique().sort().each(function (d, j) {
             select.append('<option value="' + d + '">' + d + '</option>')
           });
