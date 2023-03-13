@@ -1,6 +1,6 @@
 $(document).ready(function() {
   // Define a URL do arquivo CSV
-  var url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0QlkjA7LONKSr0yIOxjO8b0YHzJZtxI86ZJcOyKRKjJt0lBtq3yFk-8W8evvREY5ry5N3_xNcZjlP/pub?gid=0&single=true&output=csv";
+  var url = "https://drive.google.com/file/d/1pqHt4-sgd52ijrAcSqx-zu_oz2nhkDXT/view?usp=share_link";
 
   // Carrega o arquivo CSV com o AJAX
   $.get(url, function(data) {
