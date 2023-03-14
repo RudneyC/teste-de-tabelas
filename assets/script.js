@@ -1,57 +1,36 @@
 $(document).ready(function() {
-  // Define a URL do arquivo CSV
-  var url = "https://drive.google.com/uc?id=1pqHt4-sgd52ijrAcSqx-zu_oz2nhkDXT&export=download";
 
-  // Carrega o arquivo CSV com o AJAX
-  $.get(url, function(data) {
-    // Converte o arquivo CSV em um objeto JSON
-    var jsonData = $.csv.toObjects(data);
-    // Extrai as chaves dos dados
-    var keys = Object.keys(jsonData[0]);
+  // Define o nome do arquivo CSV
+  var csvFileName = "dados.csv";
 
-    // Adiciona os cabeçalhos da tabela
+  // Faz a leitura do arquivo CSV
+  $.get(csvFileName, function (data) {
+
+    // Divide o conteúdo do arquivo CSV em linhas
+    var lines = data.split("\n");
+
+    // Extrai os cabeçalhos da tabela
     var tableHead = "<tr>";
-    for (var i = 0; i < keys.length; i++) {
-      tableHead += "<th>" + keys[i] + "</th>";
+    var headers = lines[0].split(",");
+    for (var i = 0; i < headers.length; i++) {
+      tableHead += "<th>" + headers[i] + "</th>";
     }
     tableHead += "</tr>";
     $("#table-head").append(tableHead);
 
-    // Adiciona os dados na tabela
-    var tableBody = "";
-    for (var i = 0; i < jsonData.length; i++) {
-      tableBody += "<tr>";
-      for (var j = 0; j < keys.length; j++) {
-        tableBody += "<td>" + jsonData[i][keys[j]] + "</td>";
+    // Extrai os dados da tabela
+    for (var i = 1; i < lines.length; i++) {
+      var tableRow = "<tr>";
+      var cells = lines[i].split(",");
+      for (var j = 0; j < cells.length; j++) {
+        tableRow += "<td>" + cells[j] + "</td>";
       }
-      tableBody += "</tr>";
+      tableRow += "</tr>";
+      $("#table-body").append(tableRow);
     }
-    $("#table-body").append(tableBody);
 
-    // Cria a tabela com DataTables
-    $('#myTable').DataTable({
-      order: [[0, 'asc']],
-      initComplete: function () {
-        // Adiciona filtros dinâmicos
-        this.api().columns().every(function () {
-          var column = this;
-          var select = $('<select><option value=""></option></select>')
-            .appendTo($(column.header()))
-            .on('change', function () {
-              var val = $.fn.dataTable.util.escapeRegex(
-                $(this).val()
-              );
+    // Aplica a funcionalidade DataTables à tabela
+    $('#myTable').DataTable();
 
-              column
-                .search(val ? '^' + val + '$' : '', true, false)
-                .draw();
-            });
-
-          column.data().unique().sort().each(function (d, j) {
-            select.append('<option value="' + d + '">' + d + '</option>')
-          });
-        });
-      }
-    });
   });
 });
