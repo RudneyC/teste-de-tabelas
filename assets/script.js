@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // Define o nome do arquivo CSV
-  var url = "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/data/dados.csv";
+  var url = "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv";
   
   // Faz a leitura do arquivo CSV
   $.get(url, function (data) {
