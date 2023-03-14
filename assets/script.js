@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
   // Define o nome do arquivo CSV
-  var csvFileName = "dados.csv";
-
+  var url = "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv";
+  
   // Faz a leitura do arquivo CSV
-  $.get(csvFileName, function (data) {
+  $.get(url, function (data) {
 
     // Divide o conteúdo do arquivo CSV em linhas
     var lines = data.split("\n");
