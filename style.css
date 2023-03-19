@@ -1,0 +1,20 @@
+#tabela-dados {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#tabela-dados th, #tabela-dados td {
+  text-align: left;
+  padding: 8px;
+}
+
+#tabela-dados th {
+  background-color: #008080;
+  color: white;
+}
+
+#tabela-dados tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
