@@ -25,6 +25,10 @@ $(document).ready(function() {
       $('#tabela').DataTable({
         data: dados,
         columns: colunas,
+        columnDefs: [{
+          targets: '_all',
+          type: 'input'
+        }],
         paging: true,
         dom: 'Bfrtip',
         buttons: [
