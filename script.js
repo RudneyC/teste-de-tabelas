@@ -23,7 +23,7 @@ $(document).ready(function() {
       $('#tabela').DataTable({
         data: dados,
         columns: Object.keys(dados[0]).map(function(coluna) {
-          return { title: coluna, data: coluna };
+          return { title: coluna, data: coluna, searchable: true };
         }),
         paging: true,
         dom: 'Bfrtip',
