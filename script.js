@@ -1,49 +1,47 @@
-$(document).ready(function() {
-  $.ajax({
-    url: "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv",
-    dataType: "text",
-    success: function(data) {
-      var headers = [];
-      var rows = [];
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tabela Dinâmica</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  </head>
+  <body>
+    <table id="tabela" class="display"></table>
 
-      var allRows = data.split(/\r?\n|\r/);
-      headers = allRows[0].split(",");
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $.ajax({
+          url: "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv",
+          dataType: "text",
+          success: function(data) {
+            var colunas = [];
+            var dados = [];
 
-      for (var i = 1; i < allRows.length; i++) {
-        var dataRow = allRows[i].split(",");
-        if (dataRow.length == headers.length) {
-          rows.push(dataRow);
-        }
-      }
-
-      var table = $('#tabela').DataTable({
-        data: rows,
-        columns: headers,
-        initComplete: function() {
-          var columnFilters = $("#tabela tfoot th").map(function() {
-            return this.innerHTML;
-          }).get();
-          this.api().columns().every(function(index) {
-            var column = this;
-            if (index < columnFilters.length) {
-              var filterType = columnFilters[index];
-              var select = $('<select><option value="">'+filterType+'</option></select>')
-                .appendTo($(column.footer()).empty())
-                .on('change', function() {
-                  var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                  column.search(val ? '^'+val+'$' : '', true, false).draw();
-                });
-              column.data().unique().sort().each(function (d, j) {
-                select.append('<option value="' + d + '">' + d + '</option>')
-              });
+            var linhas = data.split("\n");
+            for (var i = 0; i < linhas.length; i++) {
+              var valores = linhas[i].split(",");
+              if (i === 0) {
+                colunas = valores;
+              } else {
+                var linha = {};
+                for (var j = 0; j < valores.length; j++) {
+                  linha[colunas[j]] = valores[j];
+                }
+                dados.push(linha);
+              }
             }
-          });
-        }
+
+            $('#tabela').DataTable({
+              data: dados,
+              columns: Object.keys(dados[0]).map(function(coluna) {
+                return { title: coluna, data: coluna };
+              })
+            });
+          }
+        });
       });
-    },
-    error: function(xhr, error) {
-      console.log(xhr);
-      console.log(error);
-    }
-  });
-});
+    </script>
+  </body>
+</html>
