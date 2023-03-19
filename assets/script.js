@@ -1,36 +1,30 @@
 $(document).ready(function() {
-
-  // Define o nome do arquivo CSV
-  var url = "https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv";
-  
-  // Faz a leitura do arquivo CSV
-  $.get(url, function (data) {
-
-    // Divide o conteúdo do arquivo CSV em linhas
-    var lines = data.split("\n");
-
-    // Extrai os cabeçalhos da tabela
-    var tableHead = "<tr>";
-    var headers = lines[0].split(",");
-    for (var i = 0; i < headers.length; i++) {
-      tableHead += "<th>" + headers[i] + "</th>";
-    }
-    tableHead += "</tr>";
-    $("#table-head").append(tableHead);
-
-    // Extrai os dados da tabela
-    for (var i = 1; i < lines.length; i++) {
-      var tableRow = "<tr>";
-      var cells = lines[i].split(",");
-      for (var j = 0; j < cells.length; j++) {
-        tableRow += "<td>" + cells[j] + "</td>";
-      }
-      tableRow += "</tr>";
-      $("#table-body").append(tableRow);
-    }
-
-    // Aplica a funcionalidade DataTables à tabela
-    $('#myTable').DataTable();
-
-  });
+    $.ajax({
+        url: 'https://raw.githubusercontent.com/RudneyC/teste-de-tabelas/main/dados.csv',
+        dataType: 'text',
+    }).done(successFunction);
 });
+
+function successFunction(data) {
+    var allRows = data.split(/\r?\n|\r/);
+    var tableHead = '<tr>';
+    var tableBody = '';
+    for (var i = 0; i < allRows.length; i++) {
+        var rowCells = allRows[i].split(',');
+        if (i === 0) {
+            for (var j = 0; j < rowCells.length; j++) {
+                tableHead += '<th>' + rowCells[j] + '</th>';
+            }
+            tableHead += '</tr>';
+        } else {
+            tableBody += '<tr>';
+            for (var k = 0; k < rowCells.length; k++) {
+                tableBody += '<td>' + rowCells[k] + '</td>';
+            }
+            tableBody += '</tr>';
+        }
+    }
+    $('#table-head').html(tableHead);
+    $('#table-body').html(tableBody);
+    $('#myTable').DataTable();
+}
